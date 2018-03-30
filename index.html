@@ -32,10 +32,8 @@
               });
       
       socket.on('message', function(message) {
-        console.log(message);
         var messageLi = document.createElement('li');
         messageLi.innerText = message;
-        console.log(messageLi);
         document.querySelector('#messages').appendChild(messageLi);
       });
     </script>    
