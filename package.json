@@ -6,6 +6,9 @@
   "repository": "https://github.com/victoralvess/chat-app-with-socket.io",
   "author": "Victor Silva <vsilva.programador@gmail.com>",
   "license": "MIT",
+  "scripts": {
+  	"start": "node index.js"
+  },
   "dependencies": {
     "express": "^4.16.3",
     "socket.io": "^2.1.0"
