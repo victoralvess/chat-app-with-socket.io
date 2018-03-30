@@ -1,0 +1,13 @@
+{
+  "name": "chat-app-with-socket.io",
+  "version": "0.1.0",
+  "description": "Simple chat app with express.js and socket.io",
+  "main": "index.js",
+  "repository": "https://github.com/victoralvess/chat-app-with-socket.io",
+  "author": "Victor Silva <vsilva.programador@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.1.0"
+  }
+}
