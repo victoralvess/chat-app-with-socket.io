@@ -157,22 +157,100 @@
     </main>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      var socket = io();
+      var username = prompt('Username') || 'anonymous' + Math.random();
+      var profileUrl = 'https://robohash.org/' + username + (Math.random() * 11) + '.png/?size=50x50';
       
+      var user = {
+        username,
+        profileUrl
+      };
+
+      var socket = io({
+        query: {
+          user: JSON.stringify(user)
+        }
+      });
+
       document.querySelector('form')
               .addEventListener('submit', function(ev) {
                 ev.preventDefault();
                 var input = document.querySelector('#m');
-                socket.emit('message', input.value);
+                socket.emit('message', {
+                  sender: {
+                    username,
+                    profileUrl
+                  },
+                  body: input.value
+                });
                 input.value = '';
                 return false;
               });
+
+      socket.on('user', function(newUser) {
+        
+        if (newUser.id != socket.id) {
+          console.log('isdiff', user);
+          user.id = socket.id;
+          socket.emit('me', user);       
+          if (!document.querySelector('#UID_' + newUser.id)) {
+            createListItem(newUser);  
+          }
+        }        
+        
+      });
       
       socket.on('message', function(message) {
         var messageLi = document.createElement('li');
-        messageLi.innerText = message;
+        var messageDiv = document.createElement('div');        
+        
+        var senderP = document.createElement('p');
+        senderP.innerText = message.sender.username;
+
+        var messageSpan = document.createElement('span');
+        messageSpan.innerText = message.body;
+
+        var userImg = document.createElement('img');
+        userImg.src = message.sender.profileUrl;
+        userImg.alt = '@' + message.sender.username;
+
+        messageLi.appendChild(userImg);
+        messageDiv.appendChild(senderP);
+        messageDiv.appendChild(messageSpan);
+        messageLi.appendChild(messageDiv);
+
         document.querySelector('#messages').appendChild(messageLi);
       });
-    </script>    
+
+      socket.on('user_disconnected', function (id) {
+        console.log('Hey', id);
+        const el = document.querySelector('#UID_' + id);
+        if (el) {
+          el.parentElement.remove();
+        }
+      });
+
+      function createListItem(newUser) {
+        var hiddenInput = document.createElement('input');
+        hiddenInput.id = 'UID_' + newUser.id;
+        hiddenInput.type = 'hidden';
+        hiddenInput.value = newUser.id;
+
+        var userLi = document.createElement('li');
+        var userImg = document.createElement('img');
+        userImg.src = newUser.profileUrl;
+        userImg.alt = '@' + newUser.username;
+
+        var usernameDiv = document.createElement('div');
+        var usernameP = document.createElement('p');
+        usernameP.innerText = newUser.username;
+        usernameDiv.appendChild(usernameP);
+        
+        userLi.appendChild(hiddenInput);
+        userLi.appendChild(userImg);
+        userLi.appendChild(usernameDiv);
+
+        document.querySelector('aside').appendChild(userLi);
+      }
+    </script>
   </body>
 </html>
