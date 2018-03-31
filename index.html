@@ -14,10 +14,19 @@
     </style>
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
+    <main class="chat">
+      <header>
+        <span>Chat App</span>
+      </header>
+      <aside></aside>
+      <div class="messages-container">
+        <section id="messages" class="messages"></section>
+      </div>
+      <form class="form" action="">
+        <input id="m" autocomplete="off"/>
+        <i class="far fa-smile"></i>
+      </form>
+    </main>
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
