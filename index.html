@@ -4,13 +4,139 @@
     <title>Socket.IO chat</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
+     
+      body { 
+        font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        line-height: 1;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;        
+      }
+
+      li {
+        list-style: none;
+      }
+
+      .chat {
+        display: grid;
+        grid-template-rows: 65px auto 65px; 
+        grid-template-columns: 200px auto;
+        grid-template-areas:
+        "contacts header"
+        "contacts messages"
+        "contacts form";
+        width: 980px;
+        height: 100vh;
+        box-shadow: 10px 0 50px rgba(0, 0, 0, 0.2);
+      }
+
+      header {
+        grid-area: header;
+        border-bottom: 3px solid #eeeeee;
+        
+        display: flex;
+        align-items: center;
+        padding-left: 15px;
+      }
+
+      header > span {
+        font-size: 15px;
+        font-weight: 500;
+      }
+
+      aside {
+        grid-area: contacts;
+        background-color: #343b80;
+        color: white;
+        overflow-x: auto;
+      }
+
+      .messages-container {
+        grid-area: messages;
+        transform: scaleY(-1);
+        overflow: auto;
+      }
+
+      .messages { 
+        display: flex;
+        flex-direction: column-reverse;
+      }      
+
+      aside > li {
+        display: flex;
+        padding: 20px 0 20px 20px;
+      }
+
+      aside li:nth-child(odd) {
+        background-color: #292f66;
+      }
+
+      .messages > li {
+        display: flex;
+        padding-top: 20px;
+        padding-left: 20px;        
+      }
+
+      .messages > li {
+        transform: scaleY(-1);
+      }
+
+      aside > li > img, .messages > li > img {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+      }
+
+      aside > li > div, .messages > li > div {
+        display: flex;
+        flex-direction: column;
+        padding-left: 15px;        
+      }
+
+      aside > li > div {
+        justify-content: center;
+      }
+
+      aside > li > div > p, .messages > li > div > p {
+        font-size: 14px;
+        font-weight: 500; 
+        margin: 2px 0 2px 0;       
+      }
+
+      .messages > li > div > span {
+        font-size: 14px;
+        font-weight: 400;
+        margin: 2px 0 2px 0;
+        color: #333;
+      }
+
+      .form {
+        grid-area: form;        
+        background: #f9f9f9;
+
+        display: flex;
+        position: relative;
+        padding: 10px 20px;
+      }
+
+      .form > input {
+        width: 100%;
+        padding-right: 20px;
+        border: 1px solid #b2b2b2;
+        border-radius: 2px;
+        padding: 0 25px;
+        color: #b2b2b2;
+      }
+
+      .form > i {
+        position: absolute;
+        top: 50%;
+        right: 25px;
+        transform: translateY(-50%);
+
+        color: #b2b2b2;
+      }
     </style>
   </head>
   <body>
