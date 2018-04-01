@@ -151,65 +151,73 @@
         <section id="messages" class="messages"></section>
       </div>
       <form class="form" action="">
-        <input id="m" autocomplete="off"/>
+        <input id="message" autocomplete="off"/>
         <i class="far fa-smile"></i>
       </form>
     </main>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      var username = prompt('Username') || 'anonymous' + Math.random();
-      var profileUrl = 'https://robohash.org/' + username + (Math.random() * 11) + '.png/?size=50x50';
+      const username = prompt('Username') || 'anonymous' + Math.random();
+      const profileUrl = 'https://robohash.org/' + username + (Math.random() * 11) + '.png/?size=50x50';
       
-      var user = {
+      const user = {
         username,
         profileUrl
       };
 
-      var socket = io({
+      const socket = io({
         query: {
           user: JSON.stringify(user)
         }
       });
 
-      document.querySelector('form')
-              .addEventListener('submit', function(ev) {
-                ev.preventDefault();
-                var input = document.querySelector('#m');
-                socket.emit('message', {
-                  sender: {
-                    username,
-                    profileUrl
-                  },
-                  body: input.value
-                });
-                input.value = '';
-                return false;
-              });
+      document.querySelector('form').addEventListener('submit', submitMessage);
 
-      socket.on('user', function(newUser) {
-        
+      socket.on('user', handleConnection);
+      
+      socket.on('message', handleMessage);
+
+      socket.on('user_disconnected', handleDisconnection);
+
+      function submitMessage (ev) {
+        ev.preventDefault();
+        const input = document.querySelector('#message');
+        socket.emit('message', {
+          sender: {
+            username,
+            profileUrl
+          },
+          body: input.value
+        });
+        input.value = '';
+        return false;        
+      }
+      /*
+        The current client creates a new 'Contact' in the 'Contacts List' whenever the new user is not on that list.
+
+        @param {Object} newUser
+      */
+      function handleConnection (newUser) {
         if (newUser.id != socket.id) {
-          console.log('isdiff', user);
           user.id = socket.id;
           socket.emit('me', user);       
           if (!document.querySelector('#UID_' + newUser.id)) {
             createListItem(newUser);  
           }
-        }        
+        }
+      }
+
+      function handleMessage (message) {
+        const messageLi = document.createElement('li');
+        const messageDiv = document.createElement('div');        
         
-      });
-      
-      socket.on('message', function(message) {
-        var messageLi = document.createElement('li');
-        var messageDiv = document.createElement('div');        
-        
-        var senderP = document.createElement('p');
+        const senderP = document.createElement('p');
         senderP.innerText = message.sender.username;
 
-        var messageSpan = document.createElement('span');
+        const messageSpan = document.createElement('span');
         messageSpan.innerText = message.body;
 
-        var userImg = document.createElement('img');
+        const userImg = document.createElement('img');
         userImg.src = message.sender.profileUrl;
         userImg.alt = '@' + message.sender.username;
 
@@ -219,29 +227,28 @@
         messageLi.appendChild(messageDiv);
 
         document.querySelector('#messages').appendChild(messageLi);
-      });
+      }
 
-      socket.on('user_disconnected', function (id) {
-        console.log('Hey', id);
+      function handleDisconnection (id) {
         const el = document.querySelector('#UID_' + id);
         if (el) {
           el.parentElement.remove();
         }
-      });
+      }
 
-      function createListItem(newUser) {
-        var hiddenInput = document.createElement('input');
+      function createListItem (newUser) {
+        const hiddenInput = document.createElement('input');
         hiddenInput.id = 'UID_' + newUser.id;
         hiddenInput.type = 'hidden';
         hiddenInput.value = newUser.id;
 
-        var userLi = document.createElement('li');
-        var userImg = document.createElement('img');
+        const userLi = document.createElement('li');
+        const userImg = document.createElement('img');
         userImg.src = newUser.profileUrl;
         userImg.alt = '@' + newUser.username;
 
-        var usernameDiv = document.createElement('div');
-        var usernameP = document.createElement('p');
+        const usernameDiv = document.createElement('div');
+        const usernameP = document.createElement('p');
         usernameP.innerText = newUser.username;
         usernameDiv.appendChild(usernameP);
         
