@@ -151,7 +151,7 @@
         <section id="messages" class="messages"></section>
       </div>
       <form class="form" action="">
-        <input id="message" autocomplete="off"/>
+        <input id="message" autocomplete="off" onchange="sendTypingStatus()" />
         <i class="far fa-smile"></i>
       </form>
     </main>
@@ -162,7 +162,8 @@
       
       const user = {
         username,
-        profileUrl
+        profileUrl,
+        isTyping: false,
       };
 
       const socket = io({
@@ -176,6 +177,8 @@
       socket.on('user', handleConnection);
       
       socket.on('message', handleMessage);
+
+      socket.on('user_is_typing', handleTyping)
 
       socket.on('user_disconnected', handleDisconnection);
 
@@ -234,6 +237,20 @@
         if (el) {
           el.parentElement.remove();
         }
+      }
+
+      function sendTypingStatus () {
+        if (document.querySelector('#message').value.length > 0) {
+          user.isTyping = false;
+        } else {
+          user.isTyping = true;
+        }
+
+        socket.emit('user_is_typing', user);
+      }
+
+      function handleTyping (writer) {
+        console.log(writer.username,  'is typing');
       }
 
       function createListItem (newUser) {
