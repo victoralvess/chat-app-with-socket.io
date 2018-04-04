@@ -1,6 +1,8 @@
 <!doctype html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Socket.IO Chat</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet"> 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
@@ -11,9 +13,11 @@
       <header>
         <span>Chat App</span>
       </header>
-      <aside></aside>
+      <aside class="contacts-list"></aside>
       <div class="messages-container">
+        <div class="sub-container">
         <section id="messages" class="messages"></section>
+        </div>
       </div>
       <form class="form" action="">
         <input id="message" autocomplete="off" onchange="sendTypingStatus()" />
