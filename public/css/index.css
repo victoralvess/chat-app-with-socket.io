@@ -44,7 +44,7 @@ header > span {
   font-weight: 500;
 }
 
-aside {
+.contacts-list {
   grid-area: contacts;
   background-color: #343b80;
   color: white;
@@ -62,12 +62,12 @@ aside {
   flex-direction: column-reverse;
 }
 
-aside > li {
+.contacts-list > li {
   display: flex;
   padding: 20px 0 20px 20px;
 }
 
-aside li:nth-child(odd) {
+.contacts-list li:nth-child(odd) {
   background-color: #292f66;
 }
 
@@ -78,28 +78,28 @@ aside li:nth-child(odd) {
 }
 
 .messages > li {
-  transform: scaleY(-1);
+  transform: scaleY(-1);  
 }
 
-aside > li > img,
+.contacts-list > li > img,
 .messages > li > img {
   border-radius: 50%;
   width: 50px;
   height: 50px;
 }
 
-aside > li > div,
+.contacts-list > li > div,
 .messages > li > div {
   display: flex;
   flex-direction: column;
   padding-left: 15px;
 }
 
-aside > li > div {
+.contacts-list > li > div {
   justify-content: center;
 }
 
-aside > li > div > p,
+.contacts-list > li > div > p,
 .messages > li > div > p {
   font-size: 14px;
   font-weight: 500;
@@ -138,4 +138,22 @@ aside > li > div > p,
   transform: translateY(-50%);
 
   color: #b2b2b2;
+}
+
+@media screen and (max-width: 768px) {
+  .chat {
+    width: 100vw;
+    grid-template-columns: 60px auto;
+    box-shadow: none;
+  }
+
+  .contacts-list > li {
+    padding: 20px 0 20px 3px;
+    width: 100% !important;
+  }
+
+  .contacts-list > li > div,
+  .contacts-list > li > div > p {
+    display: none;
+  }
 }
