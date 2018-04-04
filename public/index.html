@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO Chat</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/index.css">
+  </head>
+  <body>
+    <main class="chat">
+      <header>
+        <span>Chat App</span>
+      </header>
+      <aside></aside>
+      <div class="messages-container">
+        <section id="messages" class="messages"></section>
+      </div>
+      <form class="form" action="">
+        <input id="message" autocomplete="off" onchange="sendTypingStatus()" />
+        <i class="far fa-smile"></i>
+      </form>
+    </main>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/index.js"></script>
+  </body>
+</html>
