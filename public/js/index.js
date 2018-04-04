@@ -101,19 +101,22 @@ function createListItem(newUser) {
   hiddenInput.type = 'hidden';
   hiddenInput.value = newUser.id;
 
-  const userLi = document.createElement('li');
+  const userLi = document.createElement('li');  
   const userImg = document.createElement('img');
   userImg.src = newUser.profileUrl;
   userImg.alt = '@' + newUser.username;
+  userImg.title = userImg.alt;
 
   const usernameDiv = document.createElement('div');
   const usernameP = document.createElement('p');
   usernameP.innerText = newUser.username;
   usernameDiv.appendChild(usernameP);
-
+  
   userLi.appendChild(hiddenInput);
   userLi.appendChild(userImg);
   userLi.appendChild(usernameDiv);
+
+  userLi.style.width = 'calc(100% - 100px + ' + usernameP.innerText.length * 8 + 'px)';
 
   document.querySelector('aside').appendChild(userLi);
 }
